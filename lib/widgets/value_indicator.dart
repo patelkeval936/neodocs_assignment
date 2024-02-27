@@ -14,6 +14,36 @@ class ValueIndicators extends StatelessWidget {
   final double? value;
   final bool isUpperBound;
 
+  int getFlex1(int index) {
+    if (isUpperBound) {
+      return testRanges[index].getRangeLength();
+    } else {
+      return (index > 0 ? testRanges[index - 1].getRangeLength() : 0);
+    }
+  }
+
+  int getFlex2(int index) {
+    if (isUpperBound) {
+      return (index < testRanges.length - 1
+          ? testRanges[index + 1].getRangeLength()
+          : 0);
+    } else {
+      return testRanges[index].getRangeLength();
+    }
+  }
+
+  int getTotalFlex(int index) {
+    return getFlex1(index) + getFlex2(index);
+  }
+
+  String getValueText( TestReferenceInfo info){
+    return isUpperBound
+        ? info.upperBound.toString()
+        : value != info.lowerBound
+        ? info.lowerBound.toString()
+        : '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,40 +56,21 @@ class ValueIndicators extends StatelessWidget {
           ...testRanges.map((e) {
             int index = testRanges.indexOf(e);
 
-            int flex1 = 0;
-            int flex2 = 0;
-
-            if (isUpperBound) {
-              flex1 = testRanges[index].getRangeLength();
-              flex2 = (index < testRanges.length - 1
-                  ? testRanges[index + 1].getRangeLength()
-                  : 0);
-            } else {
-              flex1 = (index > 0 ? testRanges[index - 1].getRangeLength() : 0);
-              flex2 = testRanges[index].getRangeLength();
-            }
-
-            int flexs = flex1 + flex2;
-
             return testRanges.indexOf(e) % 2 == 0
                 ? Expanded(
-                    flex: flexs,
+                    flex: getTotalFlex(index),
                     child: Row(
                       children: [
                         Expanded(
-                          flex: flex1,
+                          flex: getFlex1(index),
                           child: Container(),
                         ),
                         Text(
-                          isUpperBound
-                              ? e.upperBound.toString()
-                              : value != e.lowerBound
-                                  ? e.lowerBound.toString()
-                                  : '',
+                         getValueText(e),
                           style: AppStyles.boldTextStyle,
                         ),
                         Expanded(
-                          flex: flex2,
+                          flex: getFlex2(index),
                           child: Container(),
                         ),
                       ],
