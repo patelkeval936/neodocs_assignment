@@ -15,7 +15,8 @@ class AppStyles {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16.0),
         borderSide: const BorderSide(color: Colors.black87),
-      ));
+      ),
+  );
 
   static TextStyle boldTextStyle =
       const TextStyle(fontWeight: FontWeight.w500, fontSize: 14);

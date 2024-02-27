@@ -52,6 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Form(
                       key: context.read<TestDataProvider>().formKey,
                       child: TextFormField(
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                         controller: testValueController,
                         cursorColor: Colors.black54,
                         validator: (value) {
